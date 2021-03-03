@@ -49,6 +49,11 @@ public class SmlDocument {
 	}
 	
 	public void setDefaultIndentation(String defaultIndentation) {
+		if (defaultIndentation != null && defaultIndentation.length() > 0 &&
+				!WsvString.isWhitespace(defaultIndentation)) {
+			throw new IllegalArgumentException(
+					"Indentation value contains non whitespace character");
+		}
 		this.defaultIndentation = defaultIndentation;
 	}
 	
@@ -57,7 +62,9 @@ public class SmlDocument {
 	}
 	
 	public void setEndKeyword(String endKeyword) {
-		Objects.requireNonNull(endKeyword);
+		if (endKeyword == null) {
+			throw new IllegalArgumentException("End keyword cannot be null");
+		}
 		this.endKeyword = endKeyword;
 	}
 	

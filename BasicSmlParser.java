@@ -19,6 +19,9 @@ public class BasicSmlParser {
 				String[] values = lines[i];
 				if (values.length == 1) {
 					endKeyword = values[0];
+					if (endKeyword == null) {
+						throw new BasicSmlParserException(i, "End keyword cannot be null");
+					}
 					return;
 				} else if (values.length > 1) {
 					break;
@@ -83,17 +86,23 @@ public class BasicSmlParser {
 		String[] line = iterator.getLine();
 		
 		String name = line[0];
-		if (name.equalsIgnoreCase(iterator.getEndKeyword())) {
+		if (iterator.getEndKeyword().equalsIgnoreCase(name)) {
 			if (line.length > 1) {
 				throw iterator.getException("Attribute with end keyword name is not allowed");
 			}
 			return null;
 		}
 		if (line.length == 1) {
+			if (name == null) {
+				throw iterator.getException("Element name cannot be null");
+			}
 			SmlElement element = new SmlElement(name);
 			readElementContent(iterator, element);
 			return element;
 		} else {
+			if (name == null) {
+				throw iterator.getException("Attribute name cannot be null");
+			}
 			String[] values = Arrays.copyOfRange(line, 1, line.length);
 			SmlAttribute attribute = new SmlAttribute(name, values);
 			return attribute;

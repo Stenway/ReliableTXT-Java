@@ -43,7 +43,7 @@ public class SmlSerializer {
 		int childLevel = level + 1;
 		
 		String[] whitespaces = getWhitespaces(element.whitespaces, level, defaultIndentation);
-		wsvDocument.addLine(new String[]{element.Name}, whitespaces, element.comment);
+		wsvDocument.addLine(new String[]{element.getName()}, whitespaces, element.comment);
 		
 		for (SmlNode child : element.Nodes) {
 			child.toWsvLines(wsvDocument, childLevel, defaultIndentation, endKeyword);
@@ -71,7 +71,7 @@ public class SmlSerializer {
 	public static void serializeAttribute(SmlAttribute attribute, WsvDocument wsvDocument,
 			int level, String defaultIndentation) {
 		String[] whitespaces = getWhitespaces(attribute.whitespaces, level, defaultIndentation);
-		String[] combined = combine(attribute.Name, attribute.values);
+		String[] combined = combine(attribute.getName(), attribute.values);
 		wsvDocument.addLine(combined, whitespaces, attribute.comment);
 	}
 	

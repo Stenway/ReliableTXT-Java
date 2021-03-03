@@ -40,7 +40,7 @@ public class WsvLine {
 	static void validateWhitespaces(String... whitespaces) {
 		if (whitespaces != null) {
 			for (String whitespace : whitespaces) {
-				if (whitespace != null && !whitespace.isBlank()) {
+				if (whitespace != null && whitespace.length() > 0 && !WsvString.isWhitespace(whitespace)) {
 					throw new IllegalArgumentException(
 							"Whitespace value contains non whitespace character");
 				}

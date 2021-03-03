@@ -1,14 +1,25 @@
 package com.stenway.reliabletxt;
 
 public class SmlNamedNode extends SmlNode {
-	public String Name;
+	private String name;
 	
 	public SmlNamedNode(String name) {
-		Name = name;
+		setName(name);
+	}
+	
+	public void setName(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		}
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public boolean hasName(String name) {
-		if (Name == null) return name == null;
-		return Name.equalsIgnoreCase(name);
+		if (name == null) return false;
+		return this.name.equalsIgnoreCase(name);
 	}
 }

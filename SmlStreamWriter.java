@@ -38,7 +38,7 @@ public class SmlStreamWriter implements AutoCloseable {
 		defaultIndentation = template.defaultIndentation;
 		
 		if (!append) {
-			String rootElementName = template.getRoot().Name;
+			String rootElementName = template.getRoot().getName();
 			writer.writeLine(rootElementName);
 		}
 	}

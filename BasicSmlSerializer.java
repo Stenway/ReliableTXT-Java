@@ -15,7 +15,7 @@ public class BasicSmlSerializer {
 	private static void serializeElement(StringBuilder sb, SmlElement element,
 			int level, String defaultIndentation, String endKeyword) {
 		serializeIndentation(sb, level, defaultIndentation);
-		BasicWsvSerializer.serializeValue(sb, element.Name);
+		BasicWsvSerializer.serializeValue(sb, element.getName());
 		sb.append('\n'); 
 
 		int childLevel = level + 1;
@@ -35,7 +35,7 @@ public class BasicSmlSerializer {
 	private static void serializeAttribute(StringBuilder sb, SmlAttribute attribute,
 			int level, String defaultIndentation) {
 		serializeIndentation(sb, level, defaultIndentation);
-		BasicWsvSerializer.serializeValue(sb, attribute.Name);
+		BasicWsvSerializer.serializeValue(sb, attribute.getName());
 		sb.append(' '); 
 		BasicWsvSerializer.serializeLine(sb, attribute.getValues());
 		sb.append('\n'); 

@@ -31,7 +31,7 @@ class SmlFileAppend {
 				file.seek(index);
 				byte b = file.readByte();
 				if (b != 0) {
-					throw new SmlParserException("New line character detection failed");
+					throw new SmlParserException(-1,"New line character detection failed");
 				}
 			}
 		}
@@ -53,7 +53,7 @@ class SmlFileAppend {
 				}
 				numBytes++;
 			}
-			throw new SmlParserException("End line expected");
+			throw new SmlParserException(-1, "End line expected");
 		}
 		
 		private String getLine(long lineStart, int numBytes) throws IOException {
@@ -85,7 +85,7 @@ class SmlFileAppend {
 				WsvLine line = WsvLine.parse(lineStr);
 				if (line.hasValues()) {
 					if (line.Values.length > 1) {
-						throw new SmlParserException("Invalid end line");
+						throw new SmlParserException(-1, "Invalid end line");
 					}
 					endKeyword = line.Values[0];
 					break;

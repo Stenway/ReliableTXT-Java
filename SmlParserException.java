@@ -1,7 +1,10 @@
 package com.stenway.reliabletxt;
 
 public class SmlParserException extends RuntimeException {
-	public SmlParserException(String message) {
-		super(message);
+	public final int LineIndex;
+	
+	public SmlParserException(int lineIndex, String message) {
+		super(String.format("%s (%d)", message, lineIndex + 1));
+		LineIndex = lineIndex;
 	}
 }

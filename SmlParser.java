@@ -11,6 +11,7 @@ class SmlParser {
 		boolean isEmptyLine();
 		WsvLine getLine() throws IOException;
 		String getEndKeyword();
+		int getLineIndex();
 	}
 	
 	public static class WsvStreamLineIterator implements WsvLineIterator {
@@ -59,6 +60,11 @@ class SmlParser {
 			}
 			return result;
 		}
+		
+		@Override
+		public int getLineIndex() {
+			return index;
+		}
 	}
 	
 	static class WsvDocumentLineIterator implements WsvLineIterator {
@@ -68,7 +74,6 @@ class SmlParser {
 		int index;
 		
 		public WsvDocumentLineIterator(WsvDocument wsvDocument, String endKeyword) {
-			Objects.requireNonNull(endKeyword);
 			this.wsvDocument = wsvDocument;
 			this.endKeyword = endKeyword;
 		}
@@ -103,6 +108,11 @@ class SmlParser {
 			}
 			return result;
 		}
+		
+		@Override
+		public int getLineIndex() {
+			return index;
+		}
 	}
 		
 	public static SmlDocument parseDocument(String content) throws IOException {
@@ -127,14 +137,17 @@ class SmlParser {
 		readEmptyNodes(emptyNodesBefore, iterator);
 		
 		if (!iterator.hasLine()) {
-			throw new SmlParserException("Root element expected");
+			throw new SmlParserException(iterator.getLineIndex(), "Root element expected");
 		}
 		WsvLine rootStartLine = iterator.getLine();
 		if (!rootStartLine.hasValues() || rootStartLine.Values.length != 1 
-				|| rootStartLine.Values[0].equalsIgnoreCase(iterator.getEndKeyword())) {
-			throw new SmlParserException("Invalid root element start");
+				|| iterator.getEndKeyword().equalsIgnoreCase(rootStartLine.Values[0])) {
+			throw new SmlParserException(iterator.getLineIndex()-1, "Invalid root element start");
 		}
 		String rootElementName = rootStartLine.Values[0];
+		if (rootElementName == null) {
+			throw new SmlParserException(iterator.getLineIndex()-1, "Root element name cannot be null");
+		}
 		SmlElement rootElement = new SmlElement(rootElementName);
 		rootElement.setWhitespacesAndComment(rootStartLine.whitespaces, rootStartLine.comment);
 		return rootElement;
@@ -145,14 +158,17 @@ class SmlParser {
 		WsvLine line = iterator.getLine();
 		if (line.hasValues()) {
 			String name = line.Values[0];
-			if (name.equalsIgnoreCase(iterator.getEndKeyword())) {
+			if (iterator.getEndKeyword().equalsIgnoreCase(name)) {
 				if (line.Values.length > 1) {
-					throw new SmlParserException("Attribute with end keyword name is not allowed");
+					throw new SmlParserException(iterator.getLineIndex()-1, "Attribute with end keyword name is not allowed");
 				}
 				parentElement.setEndWhitespacesAndComment(line.whitespaces, line.comment);
 				return null;
 			}
 			if (line.Values.length == 1) {
+				if (name == null) {
+					throw new SmlParserException(iterator.getLineIndex()-1, "Element name cannot be null");
+				}
 				SmlElement childElement = new SmlElement(name);
 				childElement.setWhitespacesAndComment(line.whitespaces, line.comment);
 
@@ -160,6 +176,9 @@ class SmlParser {
 
 				node = childElement;
 			} else {
+				if (name == null) {
+					throw new SmlParserException(iterator.getLineIndex()-1, "Attribute name cannot be null");
+				}
 				String[] values = Arrays.copyOfRange(line.Values, 1, line.Values.length);
 				SmlAttribute childAttribute = new SmlAttribute(name, values);
 				childAttribute.setWhitespacesAndComment(line.whitespaces, line.comment);
@@ -178,7 +197,7 @@ class SmlParser {
 	private static void readElementContent(WsvLineIterator iterator, SmlElement element) throws IOException {
 		while (true) {
 			if (!iterator.hasLine()) {
-				throw new SmlParserException("Element not closed");
+				throw new SmlParserException(iterator.getLineIndex(), "Element not closed");
 			}
 			SmlNode node = readNode(iterator, element);
 			if (node == null) {
@@ -213,6 +232,6 @@ class SmlParser {
 				}
 			}
 		}
-		throw new SmlParserException("End keyword could not be detected");
+		throw new SmlParserException(0, "End keyword could not be detected");
 	}
 }
