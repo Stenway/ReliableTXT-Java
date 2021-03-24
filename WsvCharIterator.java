@@ -35,10 +35,15 @@ class WsvCharIterator {
 	public boolean isEndOfText() {
 		return index >= chars.length;
 	}
-	
+
 	public boolean isChar(int c) {
 		if (isEndOfText()) return false;
 		return chars[index] == c;
+	}
+	
+	public boolean isWhitespace() {
+		if (isEndOfText()) return false;
+		return WsvChar.isWhitespace(chars[index]);
 	}
 	
 	public boolean tryReadChar(int c) {
@@ -73,23 +78,23 @@ class WsvCharIterator {
 	public String readString() {
 		sb.setLength(0);
 		while (true) {
-			if (isEndOfText()) {
-				throw new WsvParserException(this, "String not closed");
+			if (isEndOfText() || isChar('\n')) {
+				throw getException("String not closed");
 			}
 			int c = chars[index];
-			if (c == '\n') {
-				throw new WsvParserException(this, "String not closed in starting line");
-			} else if (c == '"') {
+			if (c == '"') {
 				index++;
 				if (tryReadChar('"')) {
 					sb.append('"');
 				} else if(tryReadChar('/')) {
 					if (!tryReadChar('"')) {
-						throw new WsvParserException(this, "String expected after linebreak slash");
+						throw getException("Invalid string line break");
 					}
 					sb.append('\n');
-				} else {
+				} else if (isWhitespace() || isChar('#')) {
 					break;
+				} else {
+					throw getException("Invalid character after string");
 				}
 			} else {
 				sb.appendCodePoint(c);
@@ -110,13 +115,17 @@ class WsvCharIterator {
 				break;
 			}
 			if (c == '\"') {
-				throw new WsvParserException(this, "String starting in value");
+				throw getException("Invalid double quote in value");
 			}
 			index++;
 		}
 		if (index == startIndex) {
-			throw new WsvParserException(this, "Invalid value");
+			throw getException("Invalid value");
 		}
 		return new String(chars,startIndex,index-startIndex);
+	}
+	
+	public WsvParserException getException(String message) {
+		return new WsvParserException(this, message);
 	}
 }

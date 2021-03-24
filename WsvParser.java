@@ -56,7 +56,7 @@ class WsvParser {
 		ArrayList<String> whitespaces = new ArrayList<>();
 		
 		WsvLine newLine = parseLine(iterator, values, whitespaces);
-		if (iterator.tryReadChar('\n')) {
+		if (iterator.isChar('\n')) {
 			throw new WsvParserException(iterator, "Multiple WSV lines not allowed");
 		} else if (!iterator.isEndOfText()) {
 			throw new WsvParserException(iterator, "WSV line not parsed completely");

@@ -93,7 +93,7 @@ public class BasicWsvParser {
 			if (iterator.isWhitespace() || iterator.is('#')) {
 				break;
 			} else if (iterator.is('"') ) {
-				throw iterator.getException("Invalid double quote");
+				throw iterator.getException("Invalid double quote in value");
 			}
 		}
 		return iterator.get(startIndex);
@@ -113,7 +113,7 @@ public class BasicWsvParser {
 					sb.append('"');
 				} else if (iterator.is('/')) { 
 					if (!(iterator.next() && iterator.is('"'))) {
-						throw iterator.getException("Invalid line break");
+						throw iterator.getException("Invalid string line break");
 					}
 					sb.append('\n');
 				} else if (iterator.isWhitespace() || iterator.is('#')) {

@@ -5,7 +5,7 @@ public class BasicWsvParserException extends RuntimeException {
 	public final int LinePosition;
 	
 	BasicWsvParserException(int lineIndex, int linePosition, String message) {
-		super(String.format("%s (%d, %d)", message, lineIndex + 1, linePosition));
+		super(String.format("%s (%d, %d)", message, lineIndex + 1, linePosition + 1));
 		LineIndex = lineIndex;
 		LinePosition = linePosition;
 	}

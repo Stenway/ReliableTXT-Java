@@ -8,7 +8,6 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 
 public class ReliableTxtStreamWriter implements AutoCloseable {
 	public final ReliableTxtEncoding Encoding;

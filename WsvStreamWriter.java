@@ -1,7 +1,6 @@
 package com.stenway.reliabletxt;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class WsvStreamWriter implements AutoCloseable {
 	ReliableTxtStreamWriter writer;

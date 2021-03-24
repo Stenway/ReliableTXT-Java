@@ -30,4 +30,9 @@ public class SmlNode {
 	void toWsvLines(WsvDocument document, int level, String defaultIndentation, String endKeyword) {
 		
 	}
+	
+	public void minify() {
+		whitespaces = null;
+		comment = null;
+	}
 }

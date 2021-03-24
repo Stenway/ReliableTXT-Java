@@ -203,4 +203,19 @@ public class SmlElement extends SmlNamedNode {
 	void toWsvLines(WsvDocument document, int level, String defaultIndentation, String endKeyword) {
 		SmlSerializer.serializeElement(this, document, level, defaultIndentation, endKeyword);
 	}
+	
+	@Override
+	public void minify() {
+		var toRemoveList = Nodes.stream().filter(node -> node instanceof SmlEmptyNode).toArray();
+		for (var toRemove : toRemoveList) {
+			Nodes.remove(toRemove);
+		}
+		whitespaces = null;
+		comment = null;
+		endWhitespaces = null;
+		endComment = null;
+		for (var node : Nodes) {
+			node.minify();
+		}
+	}
 }

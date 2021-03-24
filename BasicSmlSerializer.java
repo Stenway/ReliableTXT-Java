@@ -2,12 +2,21 @@ package com.stenway.reliabletxt;
 
 public class BasicSmlSerializer {
 	public static String serializeDocument(SmlDocument document) {
+		return serializeDocument(document, false);
+	}
+	
+	public static String serializeDocument(SmlDocument document, boolean minified) {
 		StringBuilder sb = new StringBuilder();
 		String defaultIndentation = document.getDefaultIndentation();
 		if (defaultIndentation == null) {
 			defaultIndentation = "\t";
 		}
-		serializeElement(sb, document.getRoot(), 0, defaultIndentation, document.getEndKeyword());
+		String endKeyword = document.getEndKeyword();
+		if (minified) {
+			defaultIndentation = "";
+			endKeyword = null;
+		}
+		serializeElement(sb, document.getRoot(), 0, defaultIndentation, endKeyword);
 		sb.setLength(sb.length()-1);
 		return sb.toString();
 	}

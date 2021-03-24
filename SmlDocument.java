@@ -62,9 +62,6 @@ public class SmlDocument {
 	}
 	
 	public void setEndKeyword(String endKeyword) {
-		if (endKeyword == null) {
-			throw new IllegalArgumentException("End keyword cannot be null");
-		}
 		this.endKeyword = endKeyword;
 	}
 	
@@ -72,9 +69,25 @@ public class SmlDocument {
 		return endKeyword;
 	}
 	
+	public void minify() {
+		EmptyNodesBefore.clear();
+		EmptyNodesAfter.clear();
+		setDefaultIndentation("");
+		setEndKeyword(null);
+		root.minify();
+	}
+	
 	@Override
 	public String toString() {
 		return SmlSerializer.serializeDocument(this);
+	}
+	
+	public String toString(boolean minified) {
+		if (minified) {
+			return BasicSmlSerializer.serializeDocument(this, true);
+		} else {
+			return this.toString();
+		}
 	}
 	
 	public void save(String filePath) throws IOException {

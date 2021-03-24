@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
 
 public class ReliableTxtDocument {
@@ -16,15 +15,19 @@ public class ReliableTxtDocument {
 	}
 
 	public ReliableTxtDocument(String text) {
-		this(text,ReliableTxtEncoding.UTF_8);
+		this(text, ReliableTxtEncoding.UTF_8);
 	}
 	
 	public ReliableTxtDocument(int... codePoints) {
-		this(codePoints,ReliableTxtEncoding.UTF_8);
+		this(codePoints, ReliableTxtEncoding.UTF_8);
 	}
 	
-	public ReliableTxtDocument(String... lines) {
-		this(lines,ReliableTxtEncoding.UTF_8);
+	public ReliableTxtDocument(CharSequence... lines) {
+		this(lines, ReliableTxtEncoding.UTF_8);
+	}
+	
+	public ReliableTxtDocument(Iterable<? extends CharSequence> lines) {
+		this(lines, ReliableTxtEncoding.UTF_8);
 	}
 
 	public ReliableTxtDocument(String text, ReliableTxtEncoding encoding) {
@@ -37,11 +40,16 @@ public class ReliableTxtDocument {
 		setEncoding(encoding);
 	}
 	
-	public ReliableTxtDocument(String[] lines, ReliableTxtEncoding encoding) {
+	public ReliableTxtDocument(CharSequence[] lines, ReliableTxtEncoding encoding) {
 		setLines(lines);
 		setEncoding(encoding);
 	}
 	
+	public ReliableTxtDocument(Iterable<? extends CharSequence> lines, ReliableTxtEncoding encoding) {
+		setLines(lines);
+		setEncoding(encoding);
+	}
+
 	public ReliableTxtDocument(byte[] bytes) {
 		ReliableTxtEncoding detectedEncoding = ReliableTxtEncoding.fromBytes(bytes);
 		Charset charset = detectedEncoding.getCharset();
@@ -81,12 +89,16 @@ public class ReliableTxtDocument {
 		return encoding;
 	}
 	
-	public final void setLines(String... lines) {
-		text = String.join("\n", lines);
+	public final void setLines(CharSequence... lines) {
+		text = join(lines);
 	}
 	
+	public final void setLines(Iterable<? extends CharSequence> lines) {
+		text = join(lines);
+	}
+
 	public String[] getLines() {
-		return text.split("\n");
+		return split(text);
 	}
 	
 	@Override
@@ -132,13 +144,15 @@ public class ReliableTxtDocument {
 		new ReliableTxtDocument(codepoints,encoding).save(filePath);
 	}
 	
-	public static String join(String... lines) {
-		return new ReliableTxtDocument(lines).toString();
+	public static String join(CharSequence... lines) {
+		return String.join("\n", lines);
 	}
 	
-	public static String join(List<String> lines) {
-		String[] linesArray = new String[lines.size()];
-		lines.toArray(linesArray);
-		return new ReliableTxtDocument(linesArray).toString();
+	public static String join(Iterable<? extends CharSequence> lines) {
+		return String.join("\n", lines);
+	}
+	
+	public static String[] split(String text) {
+		return text.split("\\n");
 	}
 }

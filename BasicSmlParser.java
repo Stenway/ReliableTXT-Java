@@ -19,19 +19,23 @@ public class BasicSmlParser {
 				String[] values = lines[i];
 				if (values.length == 1) {
 					endKeyword = values[0];
-					if (endKeyword == null) {
-						throw new BasicSmlParserException(i, "End keyword cannot be null");
-					}
 					return;
 				} else if (values.length > 1) {
 					break;
 				}
 			}
-			throw new BasicSmlParserException(i, "End keyword could not be detected");
+			throw new BasicSmlParserException(lines.length-1, "End keyword could not be detected");
 		}
 		
 		public String getEndKeyword() {
 			return endKeyword;
+		}
+		
+		public boolean isEndKeyword(String name) {
+			if (name == null) {
+				return endKeyword == null;
+			}
+			return name.equalsIgnoreCase(endKeyword);
 		}
 		
 		public boolean hasLine() {
@@ -51,6 +55,10 @@ public class BasicSmlParser {
 		public BasicSmlParserException getException(String message) {
 			return new BasicSmlParserException(index, message);
 		}
+		
+		public BasicSmlParserException getLastLineException(String message) {
+			return new BasicSmlParserException(index-1, message);
+		}
 	}
 	
 	public static SmlDocument parseDocument(String content) {
@@ -63,7 +71,7 @@ public class BasicSmlParser {
 		
 		SmlNode node = readNode(iterator);
 		if (!(node instanceof SmlElement)) {
-			throw iterator.getException("Invalid root element start");
+			throw iterator.getLastLineException("Invalid root element start");
 		}
 		
 		skipEmptyLines(iterator);
@@ -86,22 +94,19 @@ public class BasicSmlParser {
 		String[] line = iterator.getLine();
 		
 		String name = line[0];
-		if (iterator.getEndKeyword().equalsIgnoreCase(name)) {
-			if (line.length > 1) {
-				throw iterator.getException("Attribute with end keyword name is not allowed");
-			}
-			return null;
-		}
 		if (line.length == 1) {
+			if (iterator.isEndKeyword(name)) {
+				return null;
+			}
 			if (name == null) {
-				throw iterator.getException("Element name cannot be null");
+				throw iterator.getLastLineException("Null value as element name is not allowed");
 			}
 			SmlElement element = new SmlElement(name);
 			readElementContent(iterator, element);
 			return element;
 		} else {
 			if (name == null) {
-				throw iterator.getException("Attribute name cannot be null");
+				throw iterator.getLastLineException("Null value as attribute name is not allowed");
 			}
 			String[] values = Arrays.copyOfRange(line, 1, line.length);
 			SmlAttribute attribute = new SmlAttribute(name, values);
@@ -112,7 +117,7 @@ public class BasicSmlParser {
 	private static void readElementContent(BasicWsvLineIterator iterator, SmlElement element) {
 		while (true) {
 			if (!iterator.hasLine()) {
-				throw iterator.getException("Element not closed");
+				throw iterator.getLastLineException("Element \""+element.getName()+"\" not closed");
 			}
 			skipEmptyLines(iterator);
 			SmlNode node = readNode(iterator);
