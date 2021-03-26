@@ -91,7 +91,7 @@ class WsvCharIterator {
 						throw getException("Invalid string line break");
 					}
 					sb.append('\n');
-				} else if (isWhitespace() || isChar('#')) {
+				} else if (isWhitespace() || isChar('#') || isEndOfText()) {
 					break;
 				} else {
 					throw getException("Invalid character after string");
