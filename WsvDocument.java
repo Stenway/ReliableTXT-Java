@@ -52,7 +52,15 @@ public class WsvDocument {
 
 	@Override
 	public String toString() {
-		return WsvSerializer.serializeDocument(this);
+		return toString(true);
+	}
+	
+	public String toString(boolean preserveWhitespaceAndComments) {
+		if (preserveWhitespaceAndComments) {
+			return WsvSerializer.serializeDocument(this);
+		} else {
+			return WsvSerializer.serializeDocumentNonPreserving(this);
+		}
 	}
 
 	public void save(String filePath) throws IOException {
@@ -61,13 +69,29 @@ public class WsvDocument {
 	}
 
 	public static WsvDocument load(String filePath) throws IOException {
+		return load(filePath, true);
+	}
+	
+	public static WsvDocument load(String filePath, boolean preserveWhitespaceAndComments) throws IOException {
 		ReliableTxtDocument txt = ReliableTxtDocument.load(filePath);
-		WsvDocument document = parse(txt.getText());
+		WsvDocument document = parse(txt.getText(), preserveWhitespaceAndComments);
 		document.encoding = txt.getEncoding();
 		return document;
 	}
 
 	public static WsvDocument parse(String content) {
-		return WsvParser.parseDocument(content);
+		return parse(content, true);
+	}
+	
+	public static WsvDocument parse(String content, boolean preserveWhitespaceAndComments) {
+		if (preserveWhitespaceAndComments) {
+			return WsvParser.parseDocument(content);
+		} else {
+			return WsvParser.parseDocumentNonPreserving(content);
+		}
+	}
+	
+	public static String[][] parseAsJaggedArray(String content) {
+		return WsvParser.parseDocumentAsJaggedArray(content);
 	}
 }

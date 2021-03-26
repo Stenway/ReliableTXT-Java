@@ -1,55 +1,13 @@
 package com.stenway.reliabletxt;
 
-class WsvCharIterator {
-	private final StringBuilder sb = new StringBuilder();
-	private final int[] chars;
-	private int index;
-	
+class WsvCharIterator extends ReliableTxtCharIterator {
 	public WsvCharIterator(String text) {
-		chars = text.codePoints().toArray();
-	}
-	
-	public String getText() {
-		return new String(chars, 0, chars.length);
-	}
-	
-	public String getLineInfoString() {
-		int[] lineInfo = getLineInfo();
-		return String.format("(%d, %d)", lineInfo[1] + 1, lineInfo[2] + 1);
-	}
-	
-	public int[] getLineInfo() {
-		int lineIndex = 0;
-		int linePosition = 0;
-		for (int i=0; i<index; i++) {
-			if (chars[i] == '\n') {
-				lineIndex++;
-				linePosition = 0;
-			} else {
-				linePosition++;
-			}
-		}
-		return new int[] {index, lineIndex, linePosition};
-	}
-	
-	public boolean isEndOfText() {
-		return index >= chars.length;
-	}
-
-	public boolean isChar(int c) {
-		if (isEndOfText()) return false;
-		return chars[index] == c;
+		super(text);
 	}
 	
 	public boolean isWhitespace() {
 		if (isEndOfText()) return false;
 		return WsvChar.isWhitespace(chars[index]);
-	}
-	
-	public boolean tryReadChar(int c) {
-		if (!isChar(c)) return false;
-		index++;
-		return true;
 	}
 	
 	public String readCommentText() {
@@ -60,6 +18,14 @@ class WsvCharIterator {
 			index++;
 		}
 		return new String(chars,startIndex,index-startIndex);
+	}
+	
+	public void skipCommentText() {
+		while (true) {
+			if (isEndOfText()) break;
+			if (chars[index] == '\n') break;
+			index++;
+		}
 	}
 
 	public String readWhitespaceOrNull() {
@@ -73,6 +39,18 @@ class WsvCharIterator {
 		}
 		if (index == startIndex) return null;
 		return new String(chars,startIndex,index-startIndex);
+	}
+	
+	public boolean skipWhitespace() {
+		int startIndex = index;
+		while (true) {
+			if (isEndOfText()) break;
+			int c = chars[index];
+			if (c == '\n') break;
+			if (!WsvChar.isWhitespace(c)) break;
+			index++;
+		}
+		return index > startIndex;
 	}
 
 	public String readString() {
@@ -126,6 +104,7 @@ class WsvCharIterator {
 	}
 	
 	public WsvParserException getException(String message) {
-		return new WsvParserException(this, message);
+		int[] lineInfo = getLineInfo();
+		return new WsvParserException(index, lineInfo[0], lineInfo[1], message);
 	}
 }

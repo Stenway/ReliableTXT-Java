@@ -76,12 +76,30 @@ public class WsvLine {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		WsvSerializer.serializeLine(sb, this);
-		return sb.toString();
+		return toString(true);
+	}
+	
+	public String toString(boolean preserveWhitespaceAndComment) {
+		if (preserveWhitespaceAndComment) {
+			return WsvSerializer.serializeLine(this);
+		} else {
+			return WsvSerializer.serializeLineNonPreserving(this);
+		}
 	}
 	
 	public static WsvLine parse(String content) {
-		return WsvParser.parseLine(content);
+		return parse(content, true);
+	}
+	
+	public static WsvLine parse(String content, boolean preserveWhitespaceAndComment) {
+		if (preserveWhitespaceAndComment) {
+			return WsvParser.parseLine(content);
+		} else {
+			return WsvParser.parseLineNonPreserving(content);
+		}
+	}
+	
+	public static String[] parseAsArray(String content) {
+		return WsvParser.parseLineAsArray(content);
 	}
 }

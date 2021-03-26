@@ -9,7 +9,7 @@ public class BasicSmlParser {
 		private int index;
 		
 		public BasicWsvLineIterator(String content) {
-			lines = BasicWsvParser.parseDocument(content);	
+			lines = WsvParser.parseDocumentAsJaggedArray(content);	
 			detectEndKeyword();
 		}
 		
