@@ -12,7 +12,7 @@ class WsvSerializer {
 		return false;
 	}
 
-	private static void serializeValue(StringBuilder sb, String value) {
+	public static void serializeValue(StringBuilder sb, String value) {
 		if (value==null) {
 			sb.append('-');
 		} else if (value.length() == 0) {
@@ -110,10 +110,68 @@ class WsvSerializer {
 		}
 	}
 	
+	public static String serializeLine(WsvLine line) {
+		StringBuilder sb = new StringBuilder();
+		serializeLine(sb, line);
+		return sb.toString();
+	}
+	
 	public static String serializeDocument(WsvDocument document) {
 		StringBuilder sb = new StringBuilder();
 		boolean isFirstLine = true;
 		for (WsvLine line : document.Lines) {
+			if (!isFirstLine) {
+				sb.append('\n');
+			} else {
+				isFirstLine = false;
+			}
+			serializeLine(sb, line);
+		}
+		return sb.toString();
+	}
+	
+	public static String serializeLineNonPreserving(WsvLine line) {
+		StringBuilder sb = new StringBuilder();
+		serializeLine(sb, line.Values);
+		return sb.toString();
+	}
+	
+	public static String serializeDocumentNonPreserving(WsvDocument document) {
+		StringBuilder sb = new StringBuilder();
+		boolean isFirstLine = true;
+		for (WsvLine line : document.Lines) {
+			if (!isFirstLine) {
+				sb.append('\n');
+			} else {
+				isFirstLine = false;
+			}
+			serializeLine(sb, line.Values);
+		}
+		return sb.toString();
+	}
+	
+	public static void serializeLine(StringBuilder sb, String[] line) {
+		boolean isFirstValue = true;
+		for (String value : line) {
+			if (!isFirstValue) {
+				sb.append(' ');
+			} else {
+				isFirstValue = false;
+			}
+			serializeValue(sb, value);
+		}
+	}
+	
+	public static String serializeLine(String... line) {
+		StringBuilder sb = new StringBuilder();
+		serializeLine(sb, line);
+		return sb.toString();
+	}
+	
+	public static String serializeDocument(String[][] lines) {
+		StringBuilder sb = new StringBuilder();
+		boolean isFirstLine = true;
+		for (String[] line : lines) {
 			if (!isFirstLine) {
 				sb.append('\n');
 			} else {

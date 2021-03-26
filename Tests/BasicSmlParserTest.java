@@ -75,7 +75,7 @@ public class BasicSmlParserTest {
 	private void parseDocument_throws_wsvException(String text, String expectedExceptionMessage) {
 		try {
 			BasicSmlParser.parseDocument(text);
-		} catch (BasicWsvParserException e) {
+		} catch (WsvParserException e) {
 			Assert.equals(e.getMessage(), expectedExceptionMessage);
 			return;
 		}
