@@ -72,11 +72,23 @@ public class BasicWsvParserTest {
 		
 		parseDocument_equals("a b c",		lineValues_a_b_c);
 		
+		parseDocument_equals_serialized("\"Hello world\"");
+		parseDocument_equals_serialized("\"Hello world\" \"Hello world\"");
+		parseDocument_equals_serialized("- -");
+		parseDocument_equals_serialized("\"-\" \"-\"");
+		parseDocument_equals_serialized("\"\" \"\"");
+		parseDocument_equals_serialized("\"\"\"\" \"\"\"\"");
+		parseDocument_equals_serialized("\"\"/\"\" \"\"/\"\"");
+		parseDocument_equals_serialized("\"Line1\"/\"Line2\" \"Line1\"/\"Line2\"");
 	}
 	
 	private void parseDocument_equals(String text, String[] expectedLineValues) {
 		String[][] actualLines = BasicWsvParser.parseDocument(text);
 		Assert.equals(actualLines.length, 1);
 		Assert.array_equals(actualLines[0], expectedLineValues);
+	}
+	
+	private void parseDocument_equals_serialized(String textAndExpected) {
+		Assert.equals(BasicWsvSerializer.serialize(BasicWsvParser.parseDocument(textAndExpected)),textAndExpected);
 	}
 }

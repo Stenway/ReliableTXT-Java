@@ -69,6 +69,16 @@ public class WsvLineTest {
 		parse_equals_toString("\ta\t#c");
 		parse_equals_toString("\ta\tb\t#c");
 		parse_equals_toString("\ta\tb\tc\t#c");
+		
+		parse_equals_toString("\"Hello world\"");
+		parse_equals_toString("\"Hello world\" \"Hello world\"");
+		parse_equals_toString("\"Hello world\" \"Hello world\" ");
+		parse_equals_toString("- -");
+		parse_equals_toString("\"-\" \"-\"");
+		parse_equals_toString("\"\" \"\"");
+		parse_equals_toString("\"\"\"\" \"\"\"\"");
+		parse_equals_toString("\"\"/\"\" \"\"/\"\"");
+		parse_equals_toString("\"Line1\"/\"Line2\" \"Line1\"/\"Line2\"");
 	}
 	
 	private void parse_equals_toString(String line) {
