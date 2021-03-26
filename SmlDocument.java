@@ -79,15 +79,19 @@ public class SmlDocument {
 	
 	@Override
 	public String toString() {
-		return SmlSerializer.serializeDocument(this);
+		return toString(true);
 	}
 	
-	public String toString(boolean minified) {
-		if (minified) {
-			return BasicSmlSerializer.serializeDocument(this, true);
+	public String toString(boolean preserveWhitespaceAndComments) {
+		if (preserveWhitespaceAndComments) {
+			return SmlSerializer.serializeDocument(this);
 		} else {
-			return this.toString();
+			return SmlSerializer.serializeDocumentNonPreserving(this, false);
 		}
+	}
+	
+	public String toStringMinified() {
+		return SmlSerializer.serializeDocumentNonPreserving(this, true);
 	}
 	
 	public void save(String filePath) throws IOException {
@@ -103,6 +107,14 @@ public class SmlDocument {
 	}
 
 	public static SmlDocument parse(String content) throws IOException {
-		return SmlParser.parseDocument(content);
+		return parse(content, true);
+	}
+	
+	public static SmlDocument parse(String content, boolean preserveWhitespaceAndComments) throws IOException {
+		if (preserveWhitespaceAndComments) {
+			return SmlParser.parseDocument(content);
+		} else {
+			return SmlParser.parseDocumentNonPreserving(content);
+		}
 	}
 }
