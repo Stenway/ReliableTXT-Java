@@ -86,6 +86,19 @@ public class WsvLineTest {
 	}
 	
 	@Test
+	public void test_parse_nonPreserving() {
+		parse_nonPreserving_equals("a b c",				"a b c");
+		parse_nonPreserving_equals("   a   b   c  ",	"a b c");
+		parse_nonPreserving_equals("a b c#",			"a b c");
+		parse_nonPreserving_equals("a b c#Comment",		"a b c");
+	}
+	
+	private void parse_nonPreserving_equals(String line, String expected) {
+		Assert.equals(WsvLine.parse(line, false).toString(), expected);
+		Assert.equals(WsvLine.parse(line).toString(false), expected);
+	}
+	
+	@Test
 	public void test_toString_singleValue() {
 		test_toString_singleValue("",				"\"\"");
 		test_toString_singleValue("a",				"a");
