@@ -1,1 +1,0 @@
-For more SML examples, go to https://www.simpleml.com
