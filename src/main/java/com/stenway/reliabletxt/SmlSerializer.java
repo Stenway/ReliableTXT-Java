@@ -2,6 +2,7 @@ package com.stenway.reliabletxt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SmlSerializer {
 	public static String serializeDocument(SmlDocument document) {
@@ -63,9 +64,14 @@ public class SmlSerializer {
 			Arrays.fill(indentChars, '\t');
 			return new String[] { new String(indentChars) };
 		} else {
-			String indentStr = defaultIndentation.repeat(level);
+			String indentStr = getIndentationString(defaultIndentation, level);
 			return new String[] {indentStr};
 		}
+	}
+	
+	private static String getIndentationString(String defaultIndentation, int level) {
+		//String indentStr = defaultIndentation.repeat(level);
+		return String.join("", Collections.nCopies(level, defaultIndentation));
 	}
 	
 	public static void serializeAttribute(SmlAttribute attribute, WsvDocument wsvDocument,
@@ -138,7 +144,7 @@ public class SmlSerializer {
 	}
 	
 	private static void serializeIndentation(StringBuilder sb, int level, String defaultIndentation) {
-		String indentStr = defaultIndentation.repeat(level);
+		String indentStr = getIndentationString(defaultIndentation, level);
 		sb.append(indentStr);
 	}
 }

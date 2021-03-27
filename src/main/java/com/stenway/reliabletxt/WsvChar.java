@@ -2,10 +2,17 @@ package com.stenway.reliabletxt;
 
 public class WsvChar {
 	public static boolean isWhitespace(int c) {
-		if (Character.isSpaceChar(c)) {
-			return true;
-		}
-		return (c >= 0x09 && c <= 0x0D) || c == 0x85;
+		return (c >= 0x09 && c <= 0x0D) || 
+				c == 0x0020 ||
+				c == 0x0085 ||
+				c == 0x00A0 ||
+				c == 0x1680 ||
+				(c >= 0x2000 && c <= 0x200A) ||
+				c == 0x2028 ||
+				c == 0x2029 ||
+				c == 0x202F ||
+				c == 0x205F ||
+				c == 0x3000;
 	}
 	
 	public static int[] getWhitespaceCodePoints() {

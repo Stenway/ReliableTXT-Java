@@ -1,6 +1,7 @@
 package com.stenway.reliabletxt;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class SmlElement extends SmlNamedNode {
 	public final ArrayList<SmlNode> Nodes = new ArrayList<SmlNode>();
@@ -104,12 +105,16 @@ public class SmlElement extends SmlNamedNode {
 	}
 	
 	public SmlAttribute attribute(String name) {
-		return Nodes.stream()
+		Optional<SmlAttribute> result = Nodes.stream()
 				.filter(node -> node instanceof SmlAttribute)
 				.map(node -> (SmlAttribute)node)
 				.filter(attribute -> attribute.hasName(name))
-				.findFirst()
-				.orElseThrow();
+				.findFirst();
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			throw new RuntimeException("Element \""+getName()+"\" does not contain a \""+name+"\" attribute");
+		}
 	}
 	
 	public boolean hasAttribute(String name) {
@@ -137,12 +142,16 @@ public class SmlElement extends SmlNamedNode {
 	}
 	
 	public SmlElement element(String name) {
-		return Nodes.stream()
+		Optional<SmlElement> result = Nodes.stream()
 				.filter(node -> node instanceof SmlElement)
 				.map(node -> (SmlElement)node)
 				.filter(element -> element.hasName(name))
-				.findFirst()
-				.orElseThrow();
+				.findFirst();
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			throw new RuntimeException("Element \""+getName()+"\" does not contain a \""+name+"\" element");
+		}
 	}
 	
 	public boolean hasElement(String name) {
@@ -206,15 +215,15 @@ public class SmlElement extends SmlNamedNode {
 	
 	@Override
 	public void minify() {
-		var toRemoveList = Nodes.stream().filter(node -> node instanceof SmlEmptyNode).toArray();
-		for (var toRemove : toRemoveList) {
+		Object[] toRemoveList = Nodes.stream().filter(node -> node instanceof SmlEmptyNode).toArray();
+		for (Object toRemove : toRemoveList) {
 			Nodes.remove(toRemove);
 		}
 		whitespaces = null;
 		comment = null;
 		endWhitespaces = null;
 		endComment = null;
-		for (var node : Nodes) {
+		for (SmlNode node : Nodes) {
 			node.minify();
 		}
 	}

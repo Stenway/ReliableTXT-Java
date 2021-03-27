@@ -12,7 +12,7 @@ public class SmlDocumentTest {
 	
 	private void toString_minify_equals(String text, String expected) {
 		try {
-			var doc = SmlDocument.parse(text);
+			SmlDocument doc = SmlDocument.parse(text);
 			Assert.equals(doc.toStringMinified(), expected);
 		} catch (IOException ex) {
 			throw new RuntimeException(ex.getMessage());
@@ -26,7 +26,7 @@ public class SmlDocumentTest {
 	
 	private void minify_equals(String text, String expected) {
 		try {
-			var doc = SmlDocument.parse(text);
+			SmlDocument doc = SmlDocument.parse(text);
 			doc.minify();
 			Assert.equals(doc.toString(), expected);
 		} catch (IOException ex) {
