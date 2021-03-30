@@ -63,6 +63,7 @@ public class SmlParserTest {
 		parseDocumentNP_throws_smlException("Root\n  -\n  End\nEnd",	"Null value as element name is not allowed (2)");
 		parseDocumentNP_throws_smlException("Root\n  - 123\nEnd",		"Null value as attribute name is not allowed (2)");
 		parseDocumentNP_throws_smlException("Root\n  Element\n  End",	"Element \"Root\" not closed (3)");
+		parseDocumentNP_throws_smlException("Root\n  Element\n  End\n",	"Element \"Root\" not closed (4)");
 		parseDocumentNP_throws_smlException("Root\nEnd\nRoot2\nEnd",	"Only one root element allowed (3)");
 		
 	}

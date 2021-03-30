@@ -392,10 +392,10 @@ class SmlParser {
 	
 	private static void readElementContentNonPreserving(WsvLineIterator iterator, SmlElement element) throws IOException {
 		while (true) {
+			skipEmptyLines(iterator);
 			if (!iterator.hasLine()) {
 				throw getLastLineException(iterator, "Element \""+element.getName()+"\" not closed");
 			}
-			skipEmptyLines(iterator);
 			SmlNode node = readNodeNonPreserving(iterator);
 			if (node == null) {
 				break;

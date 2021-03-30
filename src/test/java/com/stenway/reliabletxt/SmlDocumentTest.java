@@ -85,13 +85,14 @@ public class SmlDocumentTest {
 		parse_throws_wsvException("Root\n  FirstAttribute \"hello world\"a b c\nEnd",	"Invalid character after string (2, 31)");
 		parse_throws_wsvException("Root\n  FirstAttribute \"Line1\"/ \"Line2\"\nEnd",	"Invalid string line break (2, 26)");
 		
-		parse_throws_smlException("# Only\n# Comments",		"End keyword could not be detected (2)");
-		parse_throws_smlException("Root abc\nEnd",			"Invalid root element start (1)");
-		parse_throws_smlException("-\nEnd",					"Null value as element name is not allowed (1)");
-		parse_throws_smlException("Root\n  -\n  End\nEnd",	"Null value as element name is not allowed (2)");
-		parse_throws_smlException("Root\n  - 123\nEnd",		"Null value as attribute name is not allowed (2)");
-		parse_throws_smlException("Root\n  Element\n  End",	"Element \"Root\" not closed (3)");
-		parse_throws_smlException("Root\nEnd\nRoot2\nEnd",	"Only one root element allowed (3)");
+		parse_throws_smlException("# Only\n# Comments",			"End keyword could not be detected (2)");
+		parse_throws_smlException("Root abc\nEnd",				"Invalid root element start (1)");
+		parse_throws_smlException("-\nEnd",						"Null value as element name is not allowed (1)");
+		parse_throws_smlException("Root\n  -\n  End\nEnd",		"Null value as element name is not allowed (2)");
+		parse_throws_smlException("Root\n  - 123\nEnd",			"Null value as attribute name is not allowed (2)");
+		parse_throws_smlException("Root\n  Element\n  End",		"Element \"Root\" not closed (3)");
+		parse_throws_smlException("Root\n  Element\n  End\n",	"Element \"Root\" not closed (4)");
+		parse_throws_smlException("Root\nEnd\nRoot2\nEnd",		"Only one root element allowed (3)");
 	}
 	
 	private void parse_throws_smlException(String text, String expectedExceptionMessage) {
