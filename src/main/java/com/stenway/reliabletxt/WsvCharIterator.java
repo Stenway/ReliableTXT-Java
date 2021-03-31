@@ -69,7 +69,7 @@ class WsvCharIterator extends ReliableTxtCharIterator {
 						throw getException("Invalid string line break");
 					}
 					sb.append('\n');
-				} else if (isWhitespace() || isChar('#') || isEndOfText()) {
+				} else if (isWhitespace() || isChar('\n') || isChar('#') || isEndOfText() ) {
 					break;
 				} else {
 					throw getException("Invalid character after string");
@@ -89,7 +89,7 @@ class WsvCharIterator extends ReliableTxtCharIterator {
 				break;
 			}
 			int c = chars[index];
-			if (WsvChar.isWhitespace(c) || c == '#') {
+			if (WsvChar.isWhitespace(c) || c == '\n' || c == '#') {
 				break;
 			}
 			if (c == '\"') {

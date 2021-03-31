@@ -2,7 +2,8 @@ package com.stenway.reliabletxt;
 
 public class WsvChar {
 	public static boolean isWhitespace(int c) {
-		return (c >= 0x09 && c <= 0x0D) || 
+		return c == 0x09 || 
+				(c >= 0x0B && c <= 0x0D) ||
 				c == 0x0020 ||
 				c == 0x0085 ||
 				c == 0x00A0 ||
@@ -18,7 +19,6 @@ public class WsvChar {
 	public static int[] getWhitespaceCodePoints() {
 		return new int[] {
 			0x0009,
-			0x000A,
 			0x000B,
 			0x000C,
 			0x000D,

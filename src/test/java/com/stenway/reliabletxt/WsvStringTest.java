@@ -14,5 +14,6 @@ public class WsvStringTest {
 	public void test_isWhitespace_false() {
 		Assert.isFalse(WsvString.isWhitespace(""));
 		Assert.isFalse(WsvString.isWhitespace(" a "));
+		Assert.isFalse(WsvString.isWhitespace("\n"));
 	}
 }

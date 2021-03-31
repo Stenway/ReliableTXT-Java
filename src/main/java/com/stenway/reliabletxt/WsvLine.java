@@ -42,7 +42,7 @@ public class WsvLine {
 			for (String whitespace : whitespaces) {
 				if (whitespace != null && whitespace.length() > 0 && !WsvString.isWhitespace(whitespace)) {
 					throw new IllegalArgumentException(
-							"Whitespace value contains non whitespace character");
+							"Whitespace value contains non whitespace character or line feed");
 				}
 			}
 		}
@@ -60,7 +60,7 @@ public class WsvLine {
 	static void validateComment(String comment) {
 		if (comment != null && comment.indexOf('\n') >= 0) {
 			throw new IllegalArgumentException(
-					"Line break in comment is not allowed");
+					"Line feed in comment is not allowed");
 		}
 	}
 	

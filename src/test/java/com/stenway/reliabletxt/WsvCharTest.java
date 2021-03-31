@@ -9,7 +9,6 @@ public class WsvCharTest {
 
 	private static final int[] whitespaceChars = new int[] {
 			0x0009,
-			0x000A,
 			0x000B,
 			0x000C,
 			0x000D,
@@ -51,6 +50,11 @@ public class WsvCharTest {
 			}
 			Assert.isFalse(WsvChar.isWhitespace(c));
 		}
+	}
+	
+	@Test
+	public void test_isWhitespace_false2() {
+		Assert.isFalse(WsvChar.isWhitespace('\n'));
 	}
 	
 	@Test

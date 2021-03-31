@@ -52,7 +52,7 @@ public class SmlDocument {
 		if (defaultIndentation != null && defaultIndentation.length() > 0 &&
 				!WsvString.isWhitespace(defaultIndentation)) {
 			throw new IllegalArgumentException(
-					"Indentation value contains non whitespace character");
+					"Indentation value contains non whitespace character or line feed");
 		}
 		this.defaultIndentation = defaultIndentation;
 	}

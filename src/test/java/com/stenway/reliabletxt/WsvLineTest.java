@@ -5,6 +5,36 @@ import org.junit.Test;
 public class WsvLineTest {
 
 	@Test
+	public void test_setComment_exceptions() {
+		setComment_throws_exception("\n");
+	}
+	
+	private void setComment_throws_exception(String comment) {
+		try {
+			WsvLine wsvLine = new WsvLine();
+			wsvLine.setComment(comment);
+		} catch (Exception e) {
+			return;
+		}
+		throw new RuntimeException("Comment is valid");
+	}
+	
+	@Test
+	public void test_setWhitespaces_exceptions() {
+		setWhitespaces_throws_exception("\n");
+	}
+	
+	private void setWhitespaces_throws_exception(String... whitespaces) {
+		try {
+			WsvLine wsvLine = new WsvLine();
+			wsvLine.setWhitespaces(whitespaces);
+		} catch (Exception e) {
+			return;
+		}
+		throw new RuntimeException("Whitespaces are valid");
+	}
+	
+	@Test
 	public void test_parse_exceptions() {
 		parse_throws_exception("a b c\n",				"Multiple WSV lines not allowed (1, 6)");
 		
