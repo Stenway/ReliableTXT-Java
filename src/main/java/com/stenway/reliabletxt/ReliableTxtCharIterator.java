@@ -1,6 +1,6 @@
 package com.stenway.reliabletxt;
 
-class ReliableTxtCharIterator {
+public class ReliableTxtCharIterator {
 	protected final StringBuilder sb = new StringBuilder();
 	protected final int[] chars;
 	protected int index;

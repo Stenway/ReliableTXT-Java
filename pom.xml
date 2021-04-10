@@ -5,10 +5,10 @@
 
   <groupId>com.stenway</groupId>
   <artifactId>reliabletxt</artifactId>
-  <version>0.1.0-alpha3</version>
+  <version>0.2.0-alpha1</version>
 
   <name>ReliableTXT</name>
-  <description>Stenway reference implementation of ReliableTXT, WhitespaceSV (WSV = Whitespace Separated Values) and SimpleML (SML = Simple Markup Language)</description>
+  <description>Stenway reference implementation of ReliableTXT</description>
   <url>https://www.stenway.com</url>
 
   <properties>
