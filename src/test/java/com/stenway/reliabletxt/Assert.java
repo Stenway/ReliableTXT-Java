@@ -3,15 +3,15 @@ package com.stenway.reliabletxt;
 import static org.junit.Assert.*;
 
 public class Assert {
-	public static void array_equals(byte[] actual, byte[] expected) {
+	public static void equals(byte[] actual, byte[] expected) {
 		assertArrayEquals(expected, actual);
 	}
 	
-	public static void array_equals(int[] actual, int[] expected) {
+	public static void equals(int[] actual, int[] expected) {
 		assertArrayEquals(expected, actual);
 	}
 	
-	public static void array_equals(Object[] actual, Object[] expected) {
+	public static void equals(Object[] actual, Object[] expected) {
 		assertArrayEquals(expected, actual);
 	}
 	

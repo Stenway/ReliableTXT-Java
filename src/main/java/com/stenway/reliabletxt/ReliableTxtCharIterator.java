@@ -1,11 +1,14 @@
 package com.stenway.reliabletxt;
 
+import java.util.Objects;
+
 public class ReliableTxtCharIterator {
 	protected final StringBuilder sb = new StringBuilder();
 	protected final int[] chars;
 	protected int index;
 	
 	public ReliableTxtCharIterator(String text) {
+		Objects.requireNonNull(text);
 		chars = text.codePoints().toArray();
 	}
 	

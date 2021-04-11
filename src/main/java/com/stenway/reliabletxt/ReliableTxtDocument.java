@@ -1,7 +1,6 @@
 package com.stenway.reliabletxt;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -51,15 +50,10 @@ public class ReliableTxtDocument {
 	}
 
 	public ReliableTxtDocument(byte[] bytes) {
-		ReliableTxtEncoding detectedEncoding = ReliableTxtEncoding.fromBytes(bytes);
-		Charset charset = detectedEncoding.getCharset();
-		byte preambleLength = detectedEncoding.getPreambleLength();
+		Object[] decoderResult = ReliableTxtDecoder.decode(bytes);
 		
-		String decodedText = new String(bytes, preambleLength,
-				bytes.length-preambleLength, charset);
-
-		setText(decodedText);
-		setEncoding(detectedEncoding);
+		setEncoding((ReliableTxtEncoding)decoderResult[0]);
+		setText((String)decoderResult[1]);
 	}
 	
 	public final void setText(String text) {
@@ -90,15 +84,15 @@ public class ReliableTxtDocument {
 	}
 	
 	public final void setLines(CharSequence... lines) {
-		text = join(lines);
+		text = ReliableTxtLines.join(lines);
 	}
 	
 	public final void setLines(Iterable<? extends CharSequence> lines) {
-		text = join(lines);
+		text = ReliableTxtLines.join(lines);
 	}
 
 	public String[] getLines() {
-		return split(text);
+		return ReliableTxtLines.split(text);
 	}
 	
 	@Override
@@ -107,9 +101,7 @@ public class ReliableTxtDocument {
 	}
 	
 	public byte[] getBytes() {
-		Charset charset = encoding.getCharset();
-		String textWithPreamble = ((char)65279) + text;
-		return textWithPreamble.getBytes(charset);
+		return ReliableTxtEncoder.encode(text, encoding);
 	}
 	
 	public void save(String filePath) throws IOException {
@@ -142,17 +134,5 @@ public class ReliableTxtDocument {
 	public static void save(int[] codepoints, ReliableTxtEncoding encoding,
 			String filePath) throws IOException {
 		new ReliableTxtDocument(codepoints,encoding).save(filePath);
-	}
-	
-	public static String join(CharSequence... lines) {
-		return String.join("\n", lines);
-	}
-	
-	public static String join(Iterable<? extends CharSequence> lines) {
-		return String.join("\n", lines);
-	}
-	
-	public static String[] split(String text) {
-		return text.split("\\n");
 	}
 }

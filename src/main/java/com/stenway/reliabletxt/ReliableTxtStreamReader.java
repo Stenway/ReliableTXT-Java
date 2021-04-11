@@ -15,7 +15,7 @@ public class ReliableTxtStreamReader implements AutoCloseable {
 	boolean endReached;
 	
 	public ReliableTxtStreamReader(String filePath) throws IOException {
-		Encoding = ReliableTxtEncoding.fromFile(filePath);
+		Encoding = ReliableTxtDecoder.getEncodingFromFile(filePath);
 		Charset charset = Encoding.getCharset();
 		Path path = Paths.get(filePath);
 		reader = Files.newBufferedReader(path, charset);

@@ -39,7 +39,7 @@ public class ReliableTxtStreamWriter implements AutoCloseable {
 		isFirstLine = true;
 		OpenOption[] options = new OpenOption[0];
 		if (append && Files.exists(path) && Files.size(path) > 0) {
-			encoding = ReliableTxtEncoding.fromFile(filePath);
+			encoding = ReliableTxtDecoder.getEncodingFromFile(filePath);
 			isFirstLine = false;
 			
 			options = new OpenOption[] {StandardOpenOption.APPEND};
