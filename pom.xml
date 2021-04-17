@@ -1,30 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.stenway</groupId>
-  <artifactId>reliabletxt</artifactId>
-  <version>0.2.0-beta1</version>
-
-  <name>ReliableTXT</name>
-  <description>Stenway reference implementation of ReliableTXT</description>
-  <url>https://www.stenway.com</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-      <type>jar</type>
-    </dependency>
-  </dependencies>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.stenway</groupId>
+	<artifactId>reliabletxt</artifactId>
+	<version>0.8.0</version>
+	<packaging>jar</packaging>
+	<name>ReliableTXT</name>
+	<description>Stenway reference implementation of ReliableTXT</description>
+	<url>https://www.reliabletxt.com</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://raw.githubusercontent.com/Stenway/ReliableTXT-Java/main/LICENSE</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Stenway</name>
+			<email>dev@stenway.com</email>
+			<organization>Stenway</organization>
+			<organizationUrl>https://www.stenway.com</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:https://github.com/Stenway/ReliableTXT-Java/</connection>
+		<developerConnection>scm:git:https://github.com/Stenway/ReliableTXT-Java/</developerConnection>
+		<url>https://github.com/Stenway/ReliableTXT-Java/</url>
+	</scm>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
