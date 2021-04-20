@@ -22,9 +22,6 @@ public class ReliableTxtStreamReader implements AutoCloseable {
 		
 		if (Encoding != ReliableTxtEncoding.UTF_32) {
 			int preamble = reader.read();
-			if (preamble != 0xFEFF) {
-				throw new CharacterCodingException();
-			}
 		}
 		sb = new StringBuilder();
 	}
