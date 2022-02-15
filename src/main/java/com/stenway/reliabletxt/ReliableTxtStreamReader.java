@@ -2,25 +2,24 @@ package com.stenway.reliabletxt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ReliableTxtStreamReader implements AutoCloseable {
-	public final ReliableTxtEncoding Encoding;
-	BufferedReader reader;
-	StringBuilder sb;
-	boolean endReached;
+	public final ReliableTxtEncoding encoding;
+	protected BufferedReader reader;
+	protected StringBuilder sb;
+	protected boolean endReached;
 	
 	public ReliableTxtStreamReader(String filePath) throws IOException {
-		Encoding = ReliableTxtDecoder.getEncodingFromFile(filePath);
-		Charset charset = Encoding.getCharset();
+		encoding = ReliableTxtDecoder.getEncodingFromFile(filePath);
+		Charset charset = encoding.getCharset();
 		Path path = Paths.get(filePath);
 		reader = Files.newBufferedReader(path, charset);
 		
-		if (Encoding != ReliableTxtEncoding.UTF_32) {
+		if (encoding != ReliableTxtEncoding.UTF_32) {
 			int preamble = reader.read();
 		}
 		sb = new StringBuilder();

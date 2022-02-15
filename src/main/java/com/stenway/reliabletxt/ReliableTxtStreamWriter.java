@@ -10,11 +10,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class ReliableTxtStreamWriter implements AutoCloseable {
-	public final ReliableTxtEncoding Encoding;
-	BufferedWriter writer;
-	boolean isFirstLine;
+	public final ReliableTxtEncoding encoding;
+	protected BufferedWriter writer;
+	protected boolean isFirstLine;
 	
-	public final boolean AppendMode;
+	public final boolean appendMode;
 	
 	public ReliableTxtStreamWriter(String filePath) throws IOException {
 		this(filePath, null, false);
@@ -44,11 +44,11 @@ public class ReliableTxtStreamWriter implements AutoCloseable {
 			
 			options = new OpenOption[] {StandardOpenOption.APPEND};
 		}
-		AppendMode = !isFirstLine;
+		appendMode = !isFirstLine;
 		
-		Encoding = encoding;
+		this.encoding = encoding;
 		
-		Charset charset = Encoding.getCharset();
+		Charset charset = this.encoding.getCharset();
 
 		writer = Files.newBufferedWriter(path, charset, options);
 		if (isFirstLine) {

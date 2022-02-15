@@ -16,7 +16,7 @@ public class ReliableTxtStreamReaderTest {
 		ReliableTxtDocument.save("Line 1\nLine 2\nLine 3", encoding, filePath);
 		try (ReliableTxtStreamReader reader = 
 				new ReliableTxtStreamReader(filePath)) {
-			Assert.equals(reader.Encoding, encoding);
+			Assert.equals(reader.encoding, encoding);
 			String line = null;
 			int lineCount = 0;
 			while ((line = reader.readLine()) != null) {

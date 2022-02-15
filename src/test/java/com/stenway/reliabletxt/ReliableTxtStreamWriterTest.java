@@ -47,12 +47,12 @@ public class ReliableTxtStreamWriterTest {
 		deleteAppendFile(filePath);
 		try (ReliableTxtStreamWriter writer = new ReliableTxtStreamWriter(filePath, firstEncoding, true)) {
 			writer.writeLine("Line 1");
-			Assert.equals(writer.Encoding, firstEncoding);
+			Assert.equals(writer.encoding, firstEncoding);
 		}
 		load(filePath, "Line 1", firstEncoding);
 		try (ReliableTxtStreamWriter writer = new ReliableTxtStreamWriter(filePath, secondEncoding, true)) {
 			writer.writeLine("Line 2");
-			Assert.equals(writer.Encoding, firstEncoding);
+			Assert.equals(writer.encoding, firstEncoding);
 		}
 		load(filePath, "Line 1\nLine 2", firstEncoding);
 	}
